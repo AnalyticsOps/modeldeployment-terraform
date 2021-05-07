@@ -120,9 +120,4 @@ module "webapp" {
   app_service_plan_id                       = module.plan.id
   application_insights_instrumentation_key  = module.app_insights.instrumentation_key
   health_check_path                         = "health"
-  app_settings                              = {
-    DOCKER_REGISTRY_SERVER_URL = var.cr_login_server
-    DOCKER_REGISTRY_SERVER_USERNAME = var.cr_admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = var.cr_admin_password
-  }
 }

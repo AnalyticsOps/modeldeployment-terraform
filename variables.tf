@@ -14,18 +14,6 @@ variable "resource_group_name" {
   type = string
 }
 
-variable "cr_login_server" {
-  type = string
-}
-
-variable "cr_admin_username" {
-  type = string
-}
-
-variable "cr_admin_password" {
-  type = string
-}
-
 variable "alert_emails" {
   type        = list(string)
   default     = []
