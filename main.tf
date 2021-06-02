@@ -21,7 +21,7 @@ data "azurerm_resource_group" "this" {
 
 # -- Application Insights ---------------------------------------------------
 module "app_insights" {
-  source                   = "git@ssh.dev.azure.com:v3/energinet/CCoE/azure-appi-module?ref=1.1"
+  source                   = "git@ssh.dev.azure.com:v3/energinet/CCoE/azure-appi-module?ref=1.1.1"
   name                     = "appi-${local.resource_postfix}"
   resource_group_name      = data.azurerm_resource_group.this.name
   location                 = data.azurerm_resource_group.this.location
@@ -101,7 +101,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "scheduled_query_rules_al
 
 
 module "plan" {
-  source                   = "git@ssh.dev.azure.com:v3/energinet/CCoE/azure-plan-module?ref=development"
+  source                   = "git@ssh.dev.azure.com:v3/energinet/CCoE/azure-plan-module?ref=1.3.3"
   name                     = "plan-${local.resource_postfix}"
   resource_group_name      = data.azurerm_resource_group.this.name
   location                 = data.azurerm_resource_group.this.location
@@ -112,17 +112,12 @@ module "plan" {
 }
 
 
-module "webapp" { 
-  source                                    = "git@ssh.dev.azure.com:v3/energinet/CCoE/azure-app-module?ref=development"
+module "webapp" {
+  source                                    = "git@ssh.dev.azure.com:v3/energinet/CCoE/azure-app-module?ref=2.0.0"
   name                                      = "app-${local.resource_postfix}"
   resource_group_name                       = data.azurerm_resource_group.this.name
   location                                  = data.azurerm_resource_group.this.location
   app_service_plan_id                       = module.plan.id
   application_insights_instrumentation_key  = module.app_insights.instrumentation_key
   health_check_path                         = "health"
-  app_settings                              = {
-    DOCKER_REGISTRY_SERVER_URL = var.cr_login_server
-    DOCKER_REGISTRY_SERVER_USERNAME = var.cr_admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = var.cr_admin_password
-  }
 }
