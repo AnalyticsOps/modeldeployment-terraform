@@ -71,7 +71,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "scheduled_query_rules_al
   description         = "Alert when model API causes HTTP Error 500"
   resource_group_name = data.azurerm_resource_group.this.name
   location            = data.azurerm_resource_group.this.location
-  data_source_id      = module.app_insights.id
+  data_source_id      = azurerm_application_insights.this.id
   enabled             = true
 
   # Count all requests with server error result code grouped into 60-minute bins
@@ -105,8 +105,10 @@ resource "azurerm_app_service_plan" "main" {
   location                 = data.azurerm_resource_group.this.location
   kind                     = "linux"
   reserved                 = true
-  tier                     = "Basic"
-  size                     = "B2"
+  sku                 {
+    tier = "Basic"
+    size = "B2"
+  }
 }
 
 
